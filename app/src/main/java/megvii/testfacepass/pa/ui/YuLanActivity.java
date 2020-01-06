@@ -17,16 +17,12 @@ import android.graphics.Typeface;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
 
-import android.view.Gravity;
 
 import android.view.View;
 import android.view.WindowManager;
@@ -40,7 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.pingan.ai.access.common.PaAccessControlMessage;
+
 import com.pingan.ai.access.common.PaAccessDetectConfig;
 
 
@@ -49,10 +45,10 @@ import com.pingan.ai.access.impl.OnPaAccessDetectListener;
 import com.pingan.ai.access.manager.PaAccessControl;
 
 
-import com.pingan.ai.access.result.PaAccessCompareFacesResult;
+
 import com.pingan.ai.access.result.PaAccessDetectFaceResult;
 import com.pingan.ai.access.result.PaAccessMultiFaceBaseInfo;
-import com.sdsmdg.tastytoast.TastyToast;
+
 
 import java.util.List;
 import java.util.TimerTask;
@@ -75,7 +71,7 @@ import megvii.testfacepass.pa.camera.CameraPreviewData2;
 
 
 import megvii.testfacepass.pa.dialog.RegisterDialog;
-import megvii.testfacepass.pa.utils.BitmapUtil;
+
 import megvii.testfacepass.pa.utils.FileUtil;
 import megvii.testfacepass.pa.utils.NV21ToBitmap;
 import megvii.testfacepass.pa.utils.SettingVar;
@@ -171,14 +167,11 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
     private Button mFaceOperationBtn;
     /*图片缓存*/
 
-    private Handler mAndroidHandler;
-    private PaAccessControl paAccessControl;
+   ;
+
     private Box<BaoCunBean> baoCunBeanDao = null;
     private BaoCunBean baoCunBean = null;
     private Box<Subject> subjectBox = null;
-    private String tupianFaceId=null;
-    private String shipinFaceId=null;
-    private static boolean isLink=false;
     private CameraManager2 manager2;
    // private PaAccessControl paFacePass;
     private CameraPreview2 cameraView2;
@@ -195,26 +188,8 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
         subjectBox=MyApplication.myApplication.getSubjectBox();
       //  mFacePassHandler=MyApplication.myApplication.getFacePassHandler();
         nv21ToBitmap = new NV21ToBitmap(YuLanActivity.this);
-        if (baoCunBean != null) {
 
-            try {
-                //PaAccessControl.getInstance().getPaAccessDetectConfig();
-                initFaceConfig();
-                paAccessControl = PaAccessControl.getInstance();
-                paAccessControl.setOnPaAccessDetectListener(onDetectListener);
-                Log.d("MianBanJiActivity3", "paAccessControl:" + paAccessControl);
-            } catch (Exception e) {
-                Log.d("MianBanJiActivity3", e.getMessage() + "初始化失败");
-                return;
-            }
-        }
-      //  EventBus.getDefault().register(this);//订阅
 
-       // initConfig();
-      //  paFacePass = PaAccessControl.getInstance();
-       // paFacePass.setOnPaAccessDetectListener(onFaceDetectListener);
-      //  paFacePass.getPaAccessDetectConfig().setIrEnabled(false); //非Ir模式，因为是单例模式，所以最好每个界面都设置是否开启Ir模式
-            isLink=false;
 
         /* 初始化界面 */
         initView();
@@ -225,14 +200,8 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
         }else {
             manager2.open(getWindowManager(), 1, cameraWidth, cameraHeight, SettingVar.cameraPreviewRotation2);//最后一个参数是红外预览方向
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(2000);
-                paAccessControl.startFrameDetect();
-            }
-        }).start();
-       // paFacePass.startFrameDetect();
+
+
     }
 
 
@@ -246,85 +215,7 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
 
         @Override
         public void onFaceDetectResult(int var1, PaAccessDetectFaceResult detectResult) {
-            // Log.d("Robin","detectResult : " + detectResult.facePassFrame.blurness);
-            if (detectResult == null)
-                return;
-            // Log.d("MianBanJiActivity3", "detectResult.feature:" + detectResult.feature);
-            PaAccessCompareFacesResult paFacePassCompareResult = paAccessControl.compareFaceToAll(detectResult.feature);
-            if (paFacePassCompareResult == null || paFacePassCompareResult.message != PaAccessControlMessage.RESULT_OK) {
-                Log.d("yulanactivity", "没有人脸信息");
-                return;
-            }
-            //人脸信息完整的
-            String id = paFacePassCompareResult.id;
-            //  Log.d("MianBanJiActivity3", "detectResult.frameHeight:" + detectResult.frameHeight);
-            //  Log.d("MianBanJiActivity3", "detectResult.frameWidth:" + detectResult.frameWidth);
-            //    faceView.setFace(detectResult.rectX,detectResult.rectY,detectResult.rectW,detectResult.rectH,detectResult.frameWidth,detectResult.frameHeight);
-            // String gender = getGender(detectResult.gender);
-            //   boolean attriButeEnable = PaAccessControl.getInstance().getPaAccessDetectConfig().isAttributeEnabled(); //Robin 是否检测了人脸属性
-            //   Log.d("MianBanJiActivity3", "paFacePassCompareResult.compareScore:" + paFacePassCompareResult.compareScore);
-            //百分之一误识为0.52；千分之一误识为0.56；万分之一误识为0.60 比对阈值可根据实际情况调整
-            if (paFacePassCompareResult.compareScore > 0.56) {
-                Log.d("YuLanActivity", "识别出来");
 
-            } else {
-                //陌生人
-                pp++;
-                if (pp > 8) {
-                    faceId = "";
-                    pp = 0;
-                        msrBitmap = nv21ToBitmap.nv21ToBitmap(detectResult.rgbFrame, detectResult.frameWidth, detectResult.frameHeight);
-                        msrBitmap= BitmapUtil.rotateBitmap(msrBitmap, SettingVar.msrBitmapRotation);
-                         if (isLink) {
-                             isLink=false;
-                             registerDialog = new RegisterDialog(msrBitmap);
-                             registerDialog.setOnConfirmClickListener(new RegisterDialog.OnConfirmClickListener() {
-                                 @Override
-                                 public void onConfirmClick(String id) {
-                                     PaAccessDetectFaceResult detectResult = paAccessControl.
-                                             detectFaceByBitmap(msrBitmap);
-                                     if (detectResult!=null && detectResult.message==
-                                             PaAccessControlMessage.RESULT_OK) {
-                                         String sid= System.currentTimeMillis()+"";
-                                         BitmapUtil.saveBitmapToSD(msrBitmap, MyApplication.SDPATH3, sid + ".png");
-                                         paAccessControl.addFace(sid , detectResult.feature, MyApplication.GROUP_IMAGE);
-                                         Subject subject = new Subject();
-                                         subject.setTeZhengMa(sid);
-                                         subject.setDepartmentName("暂无");
-                                         subject.setId(System.currentTimeMillis());
-                                         subject.setPeopleType("0");//0是员工 1是访客
-                                         subject.setName(id);
-                                         MyApplication.myApplication.getSubjectBox().put(subject);
-                                         Toast tastyToast = TastyToast.makeText(YuLanActivity.this, "注册成功", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                         tastyToast.setGravity(Gravity.CENTER, 0, 0);
-                                         tastyToast.show();
-
-                                     }else {
-                                         Toast tastyToast = TastyToast.makeText(YuLanActivity.this, "注册失败", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                         tastyToast.setGravity(Gravity.CENTER, 0, 0);
-                                         tastyToast.show();
-                                     }
-
-                                 }
-                             });
-                             registerDialog.setOnExitClickListener(new RegisterDialog.OnExitClickListener() {
-                                 @Override
-                                 public void onExitClick() {
-                                     registerDialog.dismiss();
-                                 }
-                             });
-                             registerDialog.setOnReDetectClickListener(new RegisterDialog.OnReDetectClickListener() {
-                                 @Override
-                                 public void onReDetectClick() {
-                                     registerDialog.setBitmap(msrBitmap);
-                                 }
-                             });
-                             registerDialog.show(getFragmentManager(),"ddd");
-                         }
-
-
-                }
-            }
         }
 
         @Override
@@ -337,57 +228,8 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
 
 
 
-    private void initAndroidHandler() {
-
-        mAndroidHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case MSG_SHOW_TOAST:
-                        if (mToastBlockQueue.size() > 0) {
-                            Toast toast = mToastBlockQueue.poll();
-                            if (toast != null) {
-                                toast.show();
-                            }
-                        }
-                        if (mToastBlockQueue.size() > 0) {
-                            removeMessages(MSG_SHOW_TOAST);
-                            sendEmptyMessageDelayed(MSG_SHOW_TOAST, DELAY_MILLION_SHOW_TOAST);
-                        }
-                        break;
-                }
-            }
-        };
-    }
 
 
-
-    /**
-     * 获取本地化后的config
-     * 注册和比对使用不同的设置
-     */
-    private void initFaceConfig() {
-        //Robin 使用比对的设置
-
-        PaAccessDetectConfig faceDetectConfig = PaAccessControl.getInstance().getPaAccessDetectConfig();
-
-        faceDetectConfig.setFaceConfidenceThreshold(0.85f); //检测是不是人的脸。默认使用阀值 0.85f，阈值视具体 情况而定，最大为 1。
-        faceDetectConfig.setYawThreshold(40);//人脸识别角度
-        faceDetectConfig.setRollThreshold(40);
-        faceDetectConfig.setPitchThreshold(40);
-        // 注册图片模糊度可以设置0.9f（最大值1.0）这样能让底图更清晰。比对的模糊度可以调低一点，这样能加快识别速度，识别模糊度建议设置0.1f
-        faceDetectConfig.setBlurnessThreshold(0.4f);
-        faceDetectConfig.faceNums = 1;
-        faceDetectConfig.setMinBrightnessThreshold(30); // 人脸图像最小亮度阀值，默认为 30，数值越小越 暗，太暗会影响人脸检测和活体识别，可以根据 需求调整。
-        faceDetectConfig.setMaxBrightnessThreshold(240);// 人脸图像最大亮度阀值，默认为 240，数值越大 越亮，太亮会影响人脸检测和活体识别，可以根 据需求调整。
-        faceDetectConfig.setAttributeEnabled(false);//人脸属性开关，默认关闭。会检测出人脸的性别 和年龄。人脸属性的检测会消耗运算资源，可视 情况开启，未开启性别和年龄都返回-1
-        faceDetectConfig.setLivenessEnabled(baoCunBean.isHuoTi());//活体开关
-        faceDetectConfig.setTrackingMode(true); //Robin 跟踪模式跟踪模式，开启后会提高检脸检出率，减小检脸耗时。门禁场景推荐开启。图片检测会强制关闭
-        faceDetectConfig.setIrEnabled(baoCunBean.isHuoTi()); //非Ir模式，因为是单例模式，所以最好每个界面都设置是否开启Ir模式
-        faceDetectConfig.setMinScaleThreshold(0.1f);//设置最小检脸尺寸，可以用这个来控制最远检脸距离。默认采用最小值 0.1，约 1.8 米，在 640*480 的预览分辨率下，最小人脸尺寸 为(240*0.1)*(240*0.1)即 24*24。 0.2 的最远 识别距离约 1.2 米;0.3 的最远识别距离约约 0.8 米。detectFaceMinScale 取值范围 [0.1,0.3]。门禁场景推荐 0.1;手机场景推荐 0.3。
-        PaAccessControl.getInstance().setPaAccessDetectConfig(faceDetectConfig);
-    }
 
 
 
@@ -408,7 +250,7 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
     @Override
     protected void onPause() {
         super.onPause();
-        paAccessControl.stopFrameDetect();
+
 
     }
 
@@ -419,15 +261,7 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
     @Override
     public void onPictureTaken(final CameraPreviewData cameraPreviewData) {
 
-        if (paAccessControl == null) {
-            return;
-        }
 
-        rgb = new YuvInfo(cameraPreviewData.nv21Data, SettingVar.cameraId, SettingVar.faceRotation, cameraPreviewData.width, cameraPreviewData.height);
-        if (!baoCunBean.isHuoTi()) {
-            //  Log.d("MianBanJiActivity3", "进来");
-            paAccessControl.offerFrameBuffer(cameraPreviewData.nv21Data, cameraPreviewData.width, cameraPreviewData.height, SettingVar.faceRotation, SettingVar.cameraId);
-        }
 
     }
 
@@ -565,9 +399,7 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
         if (mToastBlockQueue != null) {
             mToastBlockQueue.clear();
         }
-        if (mAndroidHandler != null) {
-            mAndroidHandler.removeCallbacksAndMessages(null);
-        }
+
 
         //paFacePass.releasePaAccessControl();
 
@@ -605,7 +437,7 @@ public class YuLanActivity extends Activity implements CameraManager.CameraListe
         switch (v.getId()) {
             case R.id.btn_group_name:
                 //paFacePass.startFrameDetect();
-               isLink=true;
+
                 break;
             case R.id.btn_face_operation:
                 //showAddFaceDialog();

@@ -1,5 +1,7 @@
 package megvii.testfacepass.pa.utils;
 
+import android.util.Log;
+
 import com.common.pos.api.util.TPS980PosUtil;
 import com.hwit.HwitManager;
 
@@ -57,6 +59,8 @@ public class DengUT {
     public  static boolean isOPENRed=false;//默认关的 false
     public  static boolean isOpenDOR=false;//默认关的 false
 
+    public  static boolean isExecution=false;//是否执行过 false
+
     public static void closeWrite(){
         writeGpio(CAMERA_WHITE_PATH,0);
     }
@@ -75,6 +79,7 @@ public class DengUT {
     }
 
     public static void openWriteGaoTong8cun(){
+        Log.d("DengUT", "开灯");
         writeFile("1");
     }
     public static void closeWriteGaoTong8cun(){

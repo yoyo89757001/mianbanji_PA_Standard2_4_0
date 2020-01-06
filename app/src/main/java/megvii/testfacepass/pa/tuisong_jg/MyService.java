@@ -186,8 +186,8 @@ public class MyService {
         paAccessControl.stopFrameDetect();
        Bitmap bitmap=readInputStreamToBitmap(file.getStream(),file.getSize());
         PaAccessDetectFaceResult detectResult = paAccessControl.
-                detectFaceByBitmap(bitmap);
-
+                detectFaceByBitmap(bitmap,PaAccessControl.getInstance().getPaAccessDetectConfig());
+            Log.d(TAG, "detectResult:" + detectResult);
         if (detectResult!=null && detectResult.message== PaAccessControlMessage.RESULT_OK) {
             BitmapUtil.saveBitmapToSD(bitmap, MyApplication.SDPATH3, id + ".png");
             //先查询有没有
@@ -246,7 +246,7 @@ public class MyService {
             Bitmap bitmap=null;
             if (file!=null){//有图片
                 bitmap=readInputStreamToBitmap(file.getStream(),file.getSize());
-                detectResult = paAccessControl.detectFaceByBitmap(bitmap);
+                detectResult = paAccessControl.detectFaceByBitmap(bitmap,PaAccessControl.getInstance().getPaAccessDetectConfig());
                 if (detectResult!=null && detectResult.message== PaAccessControlMessage.RESULT_OK) {
                     BitmapUtil.saveBitmapToSD(bitmap, MyApplication.SDPATH3, id + ".png");
                     try {
@@ -364,7 +364,7 @@ public class MyService {
            // Log.d("MyService", MyApplication.SDPATH2 + File.separator + fileHeader.getFileName() +" 图片路径");
             Bitmap bitmap=BitmapFactory.decodeFile(MyApplication.SDPATH2+File.separator+fileHeader.getFileName());
           //  Log.d("MyService", "bitmap.getWidth():" + bitmap.getWidth());
-            PaAccessDetectFaceResult detectResult = paAccessControl.detectFaceByBitmap(bitmap);
+            PaAccessDetectFaceResult detectResult = paAccessControl.detectFaceByBitmap(bitmap,PaAccessControl.getInstance().getPaAccessDetectConfig());
             String id = getFileNameNoEx(fileHeader.getFileName());
             if (detectResult!=null && detectResult.message== PaAccessControlMessage.RESULT_OK) {
                 //先查询有没有

@@ -67,6 +67,10 @@ public class FaceInit {
     static final String tokenApiUrl = "https://biap-dev-auth-test.pingan.com:10565/dev-auth-web/biap/demo/acticatecode/acquiretoken";
     static final String device = "stest-dev";
 
+   //  String authApiUrl = "https://biap-dev-auth.pingan.com/dev-auth-web/cloud/v4/awardlicence";//生产环境
+  //   String tokenApiUrl = "https://biap-dev-auth.pingan.com/dev-auth-web/biap/demo/acticatecode/acquiretoken";
+
+
     static {
         System.loadLibrary("ruitongnative");
     }
@@ -78,7 +82,7 @@ public class FaceInit {
 
 
     private  void initFacePassSDK(String s1, String s2, String s3, String id, String url2) {
-
+        Log.d("FaceInit", "s2:"+s2);
         new AcquireTokenAPI().requestToken(tokenApiUrl, s2, device, new AcquireTokenAPI.AcquireTokenListener() {
             @Override
             public void onSuccess(String response) {
@@ -111,22 +115,15 @@ public class FaceInit {
             }
         });
 
-
     }
 
     public void init(String registration, BaoCunBean baoCunBean){
         this.baoCunBean=baoCunBean;
-
-//        if (baoCunBean.getXgToken()==null || baoCunBean.getXgToken().equals("")){
-//            EventBus.getDefault().post("注册推送失败,请重启设备后再试");
-//        }else {
-        link_uplod(registration,baoCunBean.getHoutaiDiZhi());
-        //      }
-
+        link_uplod(registration,baoCunBean.getTouxiangzhuji());
     }
 
     private void initPaAccessControl(String url, String APP_ID, String APP_KEY, final String id, final String url2,String token) {
-
+        Log.d("FaceInit", "s3"+APP_KEY);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
             @Override
@@ -323,9 +320,9 @@ public class FaceInit {
 //                        }
 //                        inputStream.close();
 //                        bufferedReader.close();
-                    Log.d("FaceInit", s1s+" 2222222");
-                    Log.d("FaceInit", s2s+" 2222222");
-                    Log.d("FaceInit", s3s+" 2222222");
+                    Log.d("FaceInit", s1s+"");
+                    Log.d("FaceInit", s2s+"");
+                    Log.d("FaceInit", s3s+"");
                     baoCunBean.setAppurl(s1s);
                     baoCunBean.setAppid(s2s);
                     baoCunBean.setAppkey(s3s);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -18,31 +17,25 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hwit.HwitManager;
-import com.pingan.ai.access.common.PaAccessControlMessage;
 import com.pingan.ai.access.manager.PaAccessControl;
-import com.pingan.ai.access.result.PaAccessDetectFaceResult;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,8 +56,6 @@ import megvii.testfacepass.pa.dialog.XiuGaiSBFZDialog;
 import megvii.testfacepass.pa.dialog.XiuGaiYuYinDialog;
 import megvii.testfacepass.pa.dialog.XiuGaigGSMDialog;
 import megvii.testfacepass.pa.dialog.YuYingDialog;
-import megvii.testfacepass.pa.dialogall.ToastUtils;
-import megvii.testfacepass.pa.utils.BitmapUtil;
 import megvii.testfacepass.pa.utils.DateUtils;
 import megvii.testfacepass.pa.utils.DengUT;
 import megvii.testfacepass.pa.utils.DiaLogUtil;
@@ -291,7 +282,8 @@ public class SheZhiActivity2 extends Activity {
 //    }
 
 
-    @OnClick({R.id.rl1, R.id.rl11, R.id.rl12, R.id.rl2, R.id.rl3, R.id.rl4, R.id.rl5, R.id.rl6, R.id.rl7, R.id.rl8, R.id.rl9, R.id.rl13, R.id.rl14, R.id.rl15, R.id.rl16, R.id.rl17, R.id.rl28, R.id.daochu, R.id.rl33})
+    @OnClick({R.id.rl1, R.id.rl11, R.id.rl12, R.id.rl2, R.id.rl3, R.id.rl4, R.id.rl5, R.id.rl6, R.id.rl7, R.id.rl8, R.id.rl9,
+            R.id.rl13, R.id.rl14, R.id.rl15, R.id.rl16, R.id.rl17, R.id.rl28, R.id.daochu, R.id.rl33,R.id.rl222})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl1: {
@@ -302,6 +294,29 @@ public class SheZhiActivity2 extends Activity {
                     @Override
                     public void onClick(View v) {
                         baoCunBean.setHoutaiDiZhi(diZhiDialog.getUrl());
+                        baoCunBeanDao.put(baoCunBean);
+                        diZhiDialog.dismiss();
+                    }
+                });
+                diZhiDialog.setQuXiaoListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        diZhiDialog.dismiss();
+                    }
+                });
+                DiaLogUtil.init(diZhiDialog);
+                diZhiDialog.show();
+
+                break;
+            }
+            case R.id.rl222: {
+                final XiuGaiDiZhiDialog diZhiDialog = new XiuGaiDiZhiDialog(SheZhiActivity2.this);
+                diZhiDialog.setCanceledOnTouchOutside(false);
+                diZhiDialog.setContents("设置激活地址", baoCunBean.getTouxiangzhuji(), null);
+                diZhiDialog.setOnQueRenListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        baoCunBean.setTouxiangzhuji(diZhiDialog.getUrl());
                         baoCunBeanDao.put(baoCunBean);
                         diZhiDialog.dismiss();
                     }
@@ -660,125 +675,125 @@ public class SheZhiActivity2 extends Activity {
 
                 break;
             case R.id.rl17:
-                rl17.setEnabled(false);
-
-                if (usbPath != null) {
-                    ToastUtils.getInstances().showDialog("获取图片", "获取图片", 0);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            List<String> strings = new ArrayList<>();
-                            FileUtil.getAllFiles(usbPath + File.separator + "入库照片", strings);
-                            // FacePassHandler facePassHandler=MyApplication.myApplication.getFacePassHandler();
-                            //  Log.d("SheZhiActivity", "facePassHandler:" + facePassHandler);
-                            if (paAccessControl == null)
-                                return;
-                            int size = strings.size();
-                            if (size == 0) {
-                                EventBus.getDefault().post("未找到入库图片");
-                            }
-                            for (int i = 0; i < size; i++) {
-                                try {
-                                    String sp = strings.get(i);
-                                    String name = "";
-                                    String names = sp.substring(sp.lastIndexOf("/") + 1, sp.length());
-                                    name = names.replace(".jpg", "")
-                                            .replace(".png", "")
-                                            .replace(".jpeg", "");
-
-
-                                    long ididiid = System.currentTimeMillis();
-                                    BitmapUtil.saveBitmapToSD(BitmapFactory.decodeFile(sp), MyApplication.SDPATH3, ididiid + ".png");
-                                    PaAccessDetectFaceResult detectResult = paAccessControl.
-                                            detectFaceByFile(MyApplication.SDPATH3 + File.separator + ididiid + ".png");
-
-                                    if (detectResult != null && detectResult.message == PaAccessControlMessage.RESULT_OK) {
-                                        // Log.d("TSXXChuLi", "detectResult.message:" + detectResult.message);
-                                        //先查询有没有
-                                        try {
-//                                            PaAccessFaceInfo face = paAccessControl.queryFaceById(ididiid+"");
-//                                            if (face!=null){
-//                                                Log.d("TSXXChuLi", "删除已有的人脸:" + paAccessControl.deleteFaceById(face.faceId));
-//                                                Subject subject = subjectBox.query().equal(Subject_.teZhengMa, ididiid).build().findUnique();
-//                                                if (subject!=null)
-//                                                    subjectBox.remove(subject);
-//                                            }
-                                            paAccessControl.addFace(ididiid + "", detectResult.feature, MyApplication.GROUP_IMAGE);
-
-                                            Subject subject = new Subject();
-                                            subject.setTeZhengMa(ididiid + ""); //人员id==图片id
-                                            subject.setName(ididiid + "");
-                                            subject.setPeopleType("员工");
-                                            subject.setId(ididiid);
-                                            subjectBox.put(subject);
-                                            Log.d("MyReceiver", "单个员工入库成功");
-
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-
-                                        }
-                                    } else {
-                                        shibai++;
-                                        stringBuilder2.append("入库添加图片失败:")
-                                                .append("姓名:")
-                                                .append(name).append("时间:")
-                                                .append(DateUtils.time(System.currentTimeMillis() + ""))
-                                                .append("\n");
-                                    }
-
-                                    ToastUtils.getInstances().setDate("入库中" + ((float) i / (float) size) * 100f + "%", 0, "失败了:" + shibai);
-
-                                } catch (Exception e) {
-                                    // e.printStackTrace();
-                                    stringBuilder2.append("入库添加图片失败:")
-                                            .append("姓名:")
-                                            .append(strings.get(i)).append("时间:")
-                                            .append(DateUtils.time(System.currentTimeMillis() + ""))
-                                            .append("错误码:").append(e.getMessage()).append("\n");
-                                }
-
-                            }
-                            String ss = stringBuilder2.toString();
-
-                            if (ss.length() > 0) {
-
-                                try {
-                                    FileUtil.savaFileToSD("失败记录" + DateUtils.timesOne(System.currentTimeMillis() + "") + ".txt", ss);
-                                    ToastUtils.getInstances().setDate("入库完成", 0, "有失败的记录,已保存到本地根目录");
-                                    stringBuilder2.delete(0, stringBuilder2.length());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            } else {
-                                if (shibai != -1)
-                                    ToastUtils.getInstances().setDate("入库完成", 0, "全部入库成功，没有失败记录");
-                            }
-
-                        }
-
-                    }).start();
-
-                } else {
-                    EventBus.getDefault().post("请先拔插一下U盘");
-                }
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SystemClock.sleep(3000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!SheZhiActivity2.this.isFinishing())
-                                    rl17.setEnabled(true);
-                            }
-                        });
-
-                    }
-                }).start();
-                break;
+//                rl17.setEnabled(false);
+//
+//                if (usbPath != null) {
+//                    ToastUtils.getInstances().showDialog("获取图片", "获取图片", 0);
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            List<String> strings = new ArrayList<>();
+//                            FileUtil.getAllFiles(usbPath + File.separator + "入库照片", strings);
+//                            // FacePassHandler facePassHandler=MyApplication.myApplication.getFacePassHandler();
+//                            //  Log.d("SheZhiActivity", "facePassHandler:" + facePassHandler);
+//                            if (paAccessControl == null)
+//                                return;
+//                            int size = strings.size();
+//                            if (size == 0) {
+//                                EventBus.getDefault().post("未找到入库图片");
+//                            }
+//                            for (int i = 0; i < size; i++) {
+//                                try {
+//                                    String sp = strings.get(i);
+//                                    String name = "";
+//                                    String names = sp.substring(sp.lastIndexOf("/") + 1, sp.length());
+//                                    name = names.replace(".jpg", "")
+//                                            .replace(".png", "")
+//                                            .replace(".jpeg", "");
+//
+//
+//                                    long ididiid = System.currentTimeMillis();
+//                                    BitmapUtil.saveBitmapToSD(BitmapFactory.decodeFile(sp), MyApplication.SDPATH3, ididiid + ".png");
+//                                    PaAccessDetectFaceResult detectResult = paAccessControl.
+//                                            detectFaceByFile(MyApplication.SDPATH3 + File.separator + ididiid + ".png");
+//
+//                                    if (detectResult != null && detectResult.message == PaAccessControlMessage.RESULT_OK) {
+//                                        // Log.d("TSXXChuLi", "detectResult.message:" + detectResult.message);
+//                                        //先查询有没有
+//                                        try {
+////                                            PaAccessFaceInfo face = paAccessControl.queryFaceById(ididiid+"");
+////                                            if (face!=null){
+////                                                Log.d("TSXXChuLi", "删除已有的人脸:" + paAccessControl.deleteFaceById(face.faceId));
+////                                                Subject subject = subjectBox.query().equal(Subject_.teZhengMa, ididiid).build().findUnique();
+////                                                if (subject!=null)
+////                                                    subjectBox.remove(subject);
+////                                            }
+//                                            paAccessControl.addFace(ididiid + "", detectResult.feature, MyApplication.GROUP_IMAGE);
+//
+//                                            Subject subject = new Subject();
+//                                            subject.setTeZhengMa(ididiid + ""); //人员id==图片id
+//                                            subject.setName(ididiid + "");
+//                                            subject.setPeopleType("员工");
+//                                            subject.setId(ididiid);
+//                                            subjectBox.put(subject);
+//                                            Log.d("MyReceiver", "单个员工入库成功");
+//
+//
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//
+//                                        }
+//                                    } else {
+//                                        shibai++;
+//                                        stringBuilder2.append("入库添加图片失败:")
+//                                                .append("姓名:")
+//                                                .append(name).append("时间:")
+//                                                .append(DateUtils.time(System.currentTimeMillis() + ""))
+//                                                .append("\n");
+//                                    }
+//
+//                                    ToastUtils.getInstances().setDate("入库中" + ((float) i / (float) size) * 100f + "%", 0, "失败了:" + shibai);
+//
+//                                } catch (Exception e) {
+//                                    // e.printStackTrace();
+//                                    stringBuilder2.append("入库添加图片失败:")
+//                                            .append("姓名:")
+//                                            .append(strings.get(i)).append("时间:")
+//                                            .append(DateUtils.time(System.currentTimeMillis() + ""))
+//                                            .append("错误码:").append(e.getMessage()).append("\n");
+//                                }
+//
+//                            }
+//                            String ss = stringBuilder2.toString();
+//
+//                            if (ss.length() > 0) {
+//
+//                                try {
+//                                    FileUtil.savaFileToSD("失败记录" + DateUtils.timesOne(System.currentTimeMillis() + "") + ".txt", ss);
+//                                    ToastUtils.getInstances().setDate("入库完成", 0, "有失败的记录,已保存到本地根目录");
+//                                    stringBuilder2.delete(0, stringBuilder2.length());
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                            } else {
+//                                if (shibai != -1)
+//                                    ToastUtils.getInstances().setDate("入库完成", 0, "全部入库成功，没有失败记录");
+//                            }
+//
+//                        }
+//
+//                    }).start();
+//
+//                } else {
+//                    EventBus.getDefault().post("请先拔插一下U盘");
+//                }
+//
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        SystemClock.sleep(3000);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (!SheZhiActivity2.this.isFinishing())
+//                                    rl17.setEnabled(true);
+//                            }
+//                        });
+//
+//                    }
+//                }).start();
+//                break;
             case R.id.daochu:
                 isT = false;
                 kaiPing();
@@ -1009,11 +1024,12 @@ public class SheZhiActivity2 extends Activity {
             }
         }
 
-        if (event.equals("激活成功")) {
-            if (bangDingDialog != null) {
-                bangDingDialog.setContents("绑定成功");
-            }
+
+        if (bangDingDialog != null) {
+            bangDingDialog.setContents(event);
         }
+
+
 
         Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, event, TastyToast.LENGTH_LONG, TastyToast.INFO);
         tastyToast.setGravity(Gravity.CENTER, 0, 0);

@@ -26,7 +26,7 @@ public class BaoCunBean {
     private String zhanghuId;
     private String wenzi;
     private int size;
-    private String touxiangzhuji;
+    private String touxiangzhuji;//存激活地址
     private String houtaiDiZhi;
     private String huiyiId;
     private String wenzi1;

@@ -180,6 +180,7 @@ public class MyApplication extends Application implements Application.ActivityLi
         if (baoCunBean == null) {
             baoCunBean = new BaoCunBean();
             baoCunBean.setHoutaiDiZhi("http://hy.inteyeligence.com/front");
+            baoCunBean.setTouxiangzhuji("http://hy.inteyeligence.com/front");
             baoCunBean.setId(123456L);
             baoCunBean.setShibieFaceSize(50);
             baoCunBean.setShibieFaZhi(0.52f);

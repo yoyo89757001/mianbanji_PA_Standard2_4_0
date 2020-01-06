@@ -1,7 +1,6 @@
 package megvii.testfacepass.pa.ui;
 
 
-
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -12,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -293,15 +293,11 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 .setAudioAttributes(abs)   //完全可以设置为null
                 .build();
         //通过load方法加载指定音频流，并将返回的音频ID放入musicId中
-
         musicId.put(1, soundPool.load(this, R.raw.tongguo, 1));
         musicId.put(2, soundPool.load(this, R.raw.wuquanxian, 1));
         musicId.put(3, soundPool.load(this, R.raw.xinxibupipei, 1));
         musicId.put(4, soundPool.load(this, R.raw.xianshibie, 1));
         musicId.put(5, soundPool.load(this, R.raw.shuaka, 1));
-
-        initView();
-
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         if (baoCunBean != null) {
@@ -312,12 +308,14 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 paAccessControl.setLogEnable(false);
                 initFaceConfig();
                 paAccessDetectConfig=paAccessControl.getPaAccessDetectConfig();
-                Log.d("MianBanJiActivity3", "paAccessControl:" + paAccessControl);
             } catch (Exception e) {
                TastyToast.makeText(MianBanJiActivity3.this,"初始化失败"+e.getMessage(),TastyToast.LENGTH_LONG,TastyToast.ERROR).show();
+               Log.d("MianBanJiActivity3", "初始化失败" + e.getMessage());
                 return;
             }
         }
+
+        initView();
 
         new Thread(new Runnable() {
             @Override
@@ -426,6 +424,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         DengUT.openLOED();
                         break;
                     case 444:
+                        Log.d("MianBanJiActivity3", "dddddddddfdsfs进来");
                         onP1 = false;
                         onP2 = false;
                         if (paAccessControl != null)
@@ -1173,12 +1172,13 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 feature2 = -1;
                 //  tishi.setVisibility(View.GONE);
                 if (DengUT.isOPEN || DengUT.isOPENRed || DengUT.isOPENGreen) {
-                  //  Log.d("MianBanJiActivity3", "进来");
                     DengUT.isOPEN = false;
                     DengUT.isOPENGreen = false;
                     DengUT.isOPENRed = false;
                     DengUT.isOpenDOR = false;
-                    DengUT.closeWrite();
+                    if (jiqiType==1){
+                        DengUT.closeWrite();
+                    }
                     if (jiqiType==2){
                         DengUT.closeWrite8cun();
                     }
@@ -1241,7 +1241,9 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             }
             if (!DengUT.isOPEN) {
                 DengUT.isOPEN = true;
-                DengUT.openWrite();
+                if (jiqiType==1){
+                    DengUT.openWrite();
+                }
                 if (jiqiType==2){
                     DengUT.openWrite8cun();
                     DengUT.openLOED8cun();
@@ -1273,9 +1275,18 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         message2.what = 111;
                         message2.obj = subject;
                         mHandler.sendMessage(message2);
-                        if (!DengUT.isOPENGreen) {
-                            DengUT.isOPENGreen = true;
-                            DengUT.openGreen();
+                        if (jiqiType==1){
+                            if (!DengUT.isOPENGreen) {
+                                DengUT.isOPENGreen = true;
+                                DengUT.openGreen();
+                            }
+                        }
+                        if (jiqiType==2){
+                            DengUT.openWrite8cun();
+                            DengUT.openLOED8cun();
+                        }
+                        if (jiqiType==3){
+                            DengUT.openWriteGaoTong8cun();
                         }
                         new Thread(new Runnable() {
                             @Override
@@ -1316,9 +1327,18 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         message2.what = 111;
                         message2.obj = subject1;
                         mHandler.sendMessage(message2);
-                        if (!DengUT.isOPENRed) {
-                            DengUT.isOPENRed = true;
-                            DengUT.openRed();
+                        if (jiqiType==1){
+                            if (!DengUT.isOPENRed) {
+                                DengUT.isOPENRed = true;
+                                DengUT.openRed();
+                            }
+                        }
+                        if (jiqiType==2){
+                            DengUT.openWrite8cun();
+                            DengUT.openLOED8cun();
+                        }
+                        if (jiqiType==3){
+                            DengUT.openWriteGaoTong8cun();
                         }
                         showUIResult(3,"陌生人","");
                     } else if (feature2 != detectResult.trackId) {
@@ -1342,10 +1362,20 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         message2.obj = subject1;
                         mHandler.sendMessage(message2);
                         showUIResult(3,"陌生人","");
-                        if (!DengUT.isOPENRed) {
-                            DengUT.isOPENRed = true;
-                            DengUT.openRed();
+                        if (jiqiType==1){
+                            if (!DengUT.isOPENRed) {
+                                DengUT.isOPENRed = true;
+                                DengUT.openRed();
+                            }
                         }
+                        if (jiqiType==2){
+                            DengUT.openWrite8cun();
+                            DengUT.openLOED8cun();
+                        }
+                        if (jiqiType==3){
+                            DengUT.openWriteGaoTong8cun();
+                        }
+
                     }
                 }
             }
@@ -1873,7 +1903,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         faceDetectConfig.setRollThreshold(40);
         faceDetectConfig.setPitchThreshold(40);
         // 注册图片模糊度可以设置0.9f（最大值1.0）这样能让底图更清晰。比对的模糊度可以调低一点，这样能加快识别速度，识别模糊度建议设置0.1f
-        faceDetectConfig.setBlurnessThreshold(0.2f);
+        faceDetectConfig.setBlurnessThreshold(0.5f);
         faceDetectConfig.setMinBrightnessThreshold(30); // 人脸图像最小亮度阀值，默认为 30，数值越小越 暗，太暗会影响人脸检测和活体识别，可以根据 需求调整。
         faceDetectConfig.setMaxBrightnessThreshold(240);// 人脸图像最大亮度阀值，默认为 240，数值越大 越亮，太亮会影响人脸检测和活体识别，可以根 据需求调整。
         faceDetectConfig.setAttributeEnabled(false);//人脸属性开关，默认关闭。会检测出人脸的性别 和年龄。人脸属性的检测会消耗运算资源，可视 情况开启，未开启性别和年龄都返回-1

@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.pingan.ai.access.impl.OnPaAccessControlInitListener;
 import com.pingan.ai.access.manager.PaAccessControl;
 import com.pingan.ai.auth.manager.PaLicenseManager;
-
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +42,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class BaseActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
 
 
-    static final String tokenApiUrl = "https://biap-dev-auth-test.pingan.com:10565/dev-auth-web/biap/demo/acticatecode/acquiretoken";
+   // static final String tokenApiUrl = "https://biap-dev-auth-test.pingan.com:10565/dev-auth-web/biap/demo/acticatecode/acquiretoken";
+    String tokenApiUrl = "https://biap-dev-auth.pingan.com/dev-auth-web/biap/demo/acticatecode/acquiretoken";
     static final String device = "stest-dev";
     private ProgressDialog mProgressDialog;
     private BaoCunBean baoCunBean;
@@ -146,7 +145,7 @@ public class BaseActivity extends AppCompatActivity implements EasyPermissions.P
                             @Override
                             public void onInitSuccess(String authRes) {
                                 PaAccessControl paAccessControl = PaAccessControl.getInstance();
-                                paAccessControl.setLogEnable(true);
+                                paAccessControl.setLogEnable(false);
                                 paAccessControl.initPaAccessControl(MyApplication.myApplication, new OnPaAccessControlInitListener() {
                                     @Override
                                     public void onSuccess() {
@@ -249,9 +248,7 @@ public class BaseActivity extends AppCompatActivity implements EasyPermissions.P
         } else {
             startAuthAndInitSDK(token);
         }
-
     }
-
 
 
     private void requestToken() {

@@ -10,7 +10,7 @@ android {
 //             }
 
     defaultConfig {
-        applicationId "com.ruitongai.mechanical"
+        applicationId "com.ruitong.mechanical.a5"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 23
