@@ -1212,7 +1212,6 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                           // faceView.clera();
                             showUIResult(1,"","");
                         }
                     });
@@ -1222,7 +1221,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 //启动定时器或重置定时器
                 if (task2 != null) {
                     task2.cancel();
-                    DengUT.isOPEN = true;
+                 //   DengUT.isOPEN = true;
                 }
             }
 
@@ -1288,6 +1287,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         if (jiqiType==3){
                             DengUT.openWriteGaoTong8cun();
                         }
+                        DengUT.isOPEN = true;
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -1327,6 +1327,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         message2.what = 111;
                         message2.obj = subject1;
                         mHandler.sendMessage(message2);
+                        DengUT.isOPEN = true;
                         if (jiqiType==1){
                             if (!DengUT.isOPENRed) {
                                 DengUT.isOPENRed = true;
@@ -1375,7 +1376,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         if (jiqiType==3){
                             DengUT.openWriteGaoTong8cun();
                         }
-
+                        DengUT.isOPEN = true;
                     }
                 }
             }
@@ -1658,8 +1659,6 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 Log.d("AllConnects", "请求失败" + e.getMessage());
                     isGET=true;
             }
-
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d("AllConnects", "请求成功" + call.request().toString());
