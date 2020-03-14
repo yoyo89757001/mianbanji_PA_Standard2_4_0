@@ -202,7 +202,7 @@ public class DengUT {
             }
         }
     }
-
+///
     private int getGpioStatus(String path){
         BufferedReader br = null;
         try{
