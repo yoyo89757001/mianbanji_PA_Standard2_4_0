@@ -114,8 +114,6 @@ public class UserListAdapter extends BaseAdapter {
             }
         });
 
-
-
         holder.groupNameTv.setText(mGroupNames.get(position).getName());
         try {
             if (mGroupNames.get(position).getTeZhengMa()!=null){
@@ -128,7 +126,6 @@ public class UserListAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return convertView;
     }
 

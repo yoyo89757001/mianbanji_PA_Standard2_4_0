@@ -16,7 +16,7 @@ public class Subject implements Comparator<Subject> {
     public Subject() {
     }
 
-    public Subject(long id, String sid, String name, String companyId, String companyName, String workNumber, String sex, String phone, String peopleType, String email, String position, int employeeStatus, int isOpen, String remark, String photo, String storeId, String storeName, String entryTime, String birthday, String teZhengMa, String departmentName, int daka, String shijian, View view) {
+    public Subject(long id, String sid, String name, String companyId, String companyName, String workNumber, String sex, String phone, String peopleType, String email, String position, int employeeStatus, int isOpen, String remark, String photo, String storeId, String storeName, long entryTime, String birthday, String teZhengMa, String departmentName, int daka, String shijian, View view) {
         this.id = id;
         this.sid = sid;
         this.name = name;
@@ -61,7 +61,7 @@ public class Subject implements Comparator<Subject> {
     private String photo;// 照片
     private String storeId;// 门店ID
     private String storeName;// 门店名称
-    private String entryTime; // 入职时间
+    private long entryTime; // 入职时间
     private String birthday; // 生日
     private String teZhengMa;
     private String departmentName;
@@ -71,6 +71,43 @@ public class Subject implements Comparator<Subject> {
     private byte[] txBytes;
     private int w;
     private int h;
+    private String idcardNum;
+    private String  faceIds1;
+    private String  faceIds2;
+    private String  faceIds3;
+
+
+    public String getFaceIds1() {
+        return faceIds1;
+    }
+
+    public void setFaceIds1(String faceIds1) {
+        this.faceIds1 = faceIds1;
+    }
+
+    public String getFaceIds2() {
+        return faceIds2;
+    }
+
+    public void setFaceIds2(String faceIds2) {
+        this.faceIds2 = faceIds2;
+    }
+
+    public String getFaceIds3() {
+        return faceIds3;
+    }
+
+    public void setFaceIds3(String faceIds3) {
+        this.faceIds3 = faceIds3;
+    }
+
+    public String getIdcardNum() {
+        return idcardNum;
+    }
+
+    public void setIdcardNum(String idcardNum) {
+        this.idcardNum = idcardNum;
+    }
 
     public int getW() {
         return w;
@@ -283,11 +320,11 @@ public class Subject implements Comparator<Subject> {
         this.storeName = storeName;
     }
 
-    public String getEntryTime() {
+    public long getEntryTime() {
         return entryTime;
     }
 
-    public void setEntryTime(String entryTime) {
+    public void setEntryTime(long entryTime) {
         this.entryTime = entryTime;
     }
 

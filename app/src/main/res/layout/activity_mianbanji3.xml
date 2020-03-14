@@ -21,7 +21,7 @@
 
 
     <!--顶部按钮和标题-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@mipmap/pic_hd11"
@@ -34,10 +34,19 @@
             android:gravity="center"
             android:layout_marginTop="12dp"
             android:textColor="@color/white"
-            android:textSize="50sp" />
+            android:textSize="46sp" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="6dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <!--蓝色图片动画-->
     <RelativeLayout

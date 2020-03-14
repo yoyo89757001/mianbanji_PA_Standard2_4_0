@@ -67,7 +67,7 @@
                 android:layout_toRightOf="@+id/im1"
                 android:layout_marginLeft="16px"
                 android:textColor="#6c020202"
-                android:text="设置后端地址"
+                android:text="设置识别回调地址"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

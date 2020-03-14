@@ -15,7 +15,7 @@
 <!--        <activity android:name=".ui.NFCActivity" android:launchMode="singleTask"/>-->
         <activity
             android:name=".ui.BaseActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +29,7 @@
 
         <activity
             android:name=".ui.SheZhiActivity2"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
 
 <!--        <activity-->
 <!--            android:name=".tps401test.nfc.NFCActivity"-->
@@ -128,8 +128,6 @@
     </application>
 
 
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" /> <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="android.permission.NFC" />
@@ -154,6 +152,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SET_TIME" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"

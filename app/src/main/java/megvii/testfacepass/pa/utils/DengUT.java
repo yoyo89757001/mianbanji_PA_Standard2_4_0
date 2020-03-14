@@ -1,9 +1,11 @@
 package megvii.testfacepass.pa.utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.common.pos.api.util.TPS980PosUtil;
 import com.hwit.HwitManager;
+import com.lztek.toolkit.Lztek;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,6 +15,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import megvii.testfacepass.pa.MyApplication;
+import megvii.testfacepass.pa.utils.fx.FxTool;
 
 public class DengUT {
     public static final int WHITE_LAMP = 3;        // 白色灯
@@ -62,32 +67,40 @@ public class DengUT {
     public  static boolean isExecution=false;//是否执行过 false
 
     public static void closeWrite(){
+        try {
+            HwitManager.HwitSetIOValue(5,0);
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
+        FxTool.fxLED1Control(false);
+        FxTool.fxLED2Control(false);
+        FxTool.fxLED3Control(false);
         writeGpio(CAMERA_WHITE_PATH,0);
+        writeFile("0");
     }
     public static void openWrite(){
         writeGpio(RED_LAMP_PATH,0); //关红灯
         writeGpio(GREEN_LAMP_PATH,0);//关绿灯
         writeGpio(GPIO7_PATH,1);
         writeGpio(CAMERA_WHITE_PATH,255);
-    }
-
-    public static void openWrite8cun(){
-        HwitManager.HwitSetIOValue(5,1);
-    }
-    public static void closeWrite8cun(){
-        HwitManager.HwitSetIOValue(5,0);
-    }
-
-    public static void openWriteGaoTong8cun(){
-        Log.d("DengUT", "开灯");
+        try {
+            HwitManager.HwitSetIOValue(5,1);
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
+        FxTool.fxLED2Control(false);
+        FxTool.fxLED3Control(false);
+        FxTool.fxLED1Control(true);
         writeFile("1");
     }
-    public static void closeWriteGaoTong8cun(){
-        writeFile("0");
-    }
+
+
+
+
 
     public static void closeRed(){
         writeGpio(RED_LAMP_PATH,0);
+        FxTool.fxLED2Control(false);
     }
 
     public static void openRed(){
@@ -95,45 +108,80 @@ public class DengUT {
         writeGpio(GPIO7_PATH,0); // 关白灯
         writeGpio(RED_LAMP_PATH,1);
         writeGpio(CAMERA_WHITE_PATH,255);
+        FxTool.fxLED1Control(false);
+        FxTool.fxLED3Control(false);
+        FxTool.fxLED2Control(true);
+        Log.d("DengUT", "红灯");
     }
 
     public static void closeLOED(){//关屏幕
         writeGpio(BRIGHTNESS_PATH,0);
+        try {
+            Lztek lztek=Lztek.create(MyApplication.myApplication);
+            lztek.setLcdBackLight(false);
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
+        try {
+            HwitManager.HwitCloseBacklight();
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
+        Log.d("DengUT", "关屏幕");
     }
 
     public static void openLOED(){//开屏幕
         writeGpio(BRIGHTNESS_PATH,255);
+        try {
+            Lztek lztek=Lztek.create(MyApplication.myApplication);
+            lztek.setLcdBackLight(true);
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
+        try {
+            HwitManager.HwitOpenBacklight();
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
+        Log.d("DengUT", "开屏幕");
     }
-    public static void openLOED8cun(){//开屏幕
-        HwitManager.HwitOpenBacklight();
-    }
-    public static void closeLOED8cun(){//关屏幕
-        HwitManager.HwitCloseBacklight();
-    }
+
 
     public static void closeGreen(){
         writeGpio(GREEN_LAMP_PATH,0);
+        FxTool.fxLED3Control(false);
     }
     public static void openGreen(){
         writeGpio(GPIO7_PATH,0); // 关白灯
         writeGpio(RED_LAMP_PATH,0); //关红灯
         writeGpio(GREEN_LAMP_PATH,1);
         writeGpio(CAMERA_WHITE_PATH,255);
+        FxTool.fxLED1Control(false);
+        FxTool.fxLED2Control(false);
+        FxTool.fxLED3Control(true);
     }
 
     public static void closeDool(){
         writeGpio(RELAY_CTL_PATH,0);
         TPS980PosUtil.setRelayPower(0);
+        FxTool.fxDoorControl(false);
+        try {
+            HwitManager.HwitSetIOValue(9,0);
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
     }
-    public static void closeDool8cun(){
-        HwitManager.HwitSetIOValue(9,0);
-    }
-    public static void openDool8cun(){
-        HwitManager.HwitSetIOValue(9,1);
-    }
+
+
     public static void openDool(){
         writeGpio(RELAY_CTL_PATH,1);
         TPS980PosUtil.setRelayPower(1);
+        FxTool.fxDoorControl(true);
+        try {
+            HwitManager.HwitSetIOValue(9,1);
+        }catch (NoClassDefFoundError e){
+            e.printStackTrace();
+        }
     }
 
 

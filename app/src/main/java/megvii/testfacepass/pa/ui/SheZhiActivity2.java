@@ -23,6 +23,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hwit.HwitManager;
+import com.lztek.toolkit.Lztek;
 import com.pingan.ai.access.manager.PaAccessControl;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -64,6 +65,7 @@ import megvii.testfacepass.pa.utils.FaceInit;
 import megvii.testfacepass.pa.utils.FileUtil;
 import megvii.testfacepass.pa.utils.GsonUtil;
 import megvii.testfacepass.pa.utils.RestartAPPTool;
+import megvii.testfacepass.pa.utils.fx.FxTool;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -174,10 +176,10 @@ public class SheZhiActivity2 extends Activity {
         }
         // mFacePassHandler=MyApplication.myApplication.getFacePassHandler();
         EventBus.getDefault().register(this);//订阅
-        if (jiqiType==2){
-            DengUT.openLOED8cun();
-        }
+
         DengUT.openLOED();
+        DengUT.closeWrite();
+
         if (baoCunBean.getDangqianChengShi2()!=null){
             chengshi.setText(baoCunBean.getDangqianChengShi2());
         }
@@ -250,13 +252,13 @@ public class SheZhiActivity2 extends Activity {
                 if (isChecked) {
                     baoCunBean.setShowShiPingLiu(true);
                     baoCunBeanDao.put(baoCunBean);
-                    Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, "门禁密码已开启", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                    Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, "门禁密码模式已开启", TastyToast.LENGTH_LONG, TastyToast.INFO);
                     tastyToast.setGravity(Gravity.CENTER, 0, 0);
                     tastyToast.show();
                 } else {
                     baoCunBean.setShowShiPingLiu(false);
                     baoCunBeanDao.put(baoCunBean);
-                    Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, "门禁密码已关闭", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                    Toast tastyToast = TastyToast.makeText(SheZhiActivity2.this, "门禁密码模式已关闭", TastyToast.LENGTH_LONG, TastyToast.INFO);
                     tastyToast.setGravity(Gravity.CENTER, 0, 0);
                     tastyToast.show();
                 }
@@ -820,8 +822,19 @@ public class SheZhiActivity2 extends Activity {
         sendBroadcast(new Intent("com.android.internal.policy.impl.showNavigationBar"));
         sendBroadcast(new Intent("com.android.systemui.statusbar.phone.statusopen"));
         if (jiqiType==2){//8寸防水面板机
-            HwitManager.HwitSetShowSystemBar(SheZhiActivity2.this);
-            HwitManager.HwitSetDisableSlideShowSysBar(0);
+            try {
+                Lztek lztek=Lztek.create(MyApplication.myApplication);
+                lztek.navigationBarSlideShow(true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            try {
+                HwitManager.HwitSetShowSystemBar(SheZhiActivity2.this);
+                HwitManager.HwitSetDisableSlideShowSysBar(0);
+            }catch (NoClassDefFoundError error){
+                error.printStackTrace();
+            }
+
         }
 
     }

@@ -27,9 +27,10 @@ public class BaoCunBean {
     private String wenzi;
     private int size;
     private String touxiangzhuji;//存激活地址
-    private String houtaiDiZhi;
+    private String houtaiDiZhi;//识别回调地址
+    private String xintiaoDIZhi;//心跳回调地址
     private String huiyiId;
-    private String wenzi1;
+    private String wenzi1;//存公司名称
     private int size1;
     private String guanggaojiMing;
     private String shiPingWeiZhi;
@@ -59,7 +60,78 @@ public class BaoCunBean {
     private String leixing;
     private String weizhi;
     private String ip;
-    private String xuliehao;
+    private String xuliehao;//序列号
+    private String jiaoyanmima;//校验密码
+    private int moshengrenPanDing;//陌生人判定次数
+    private int sbsRenLian;//是不是人脸
+    private boolean msrPanDing;//开启陌生人判断,提示是不是陌生人
+    private int jidianqi;//继电器间隔时间关门
+    private String logo;//
+    private int configModel;
+
+    public int getConfigModel() {
+        return configModel;
+    }
+
+    public void setConfigModel(int configModel) {
+        this.configModel = configModel;
+    }
+
+    public String getXintiaoDIZhi() {
+        return xintiaoDIZhi;
+    }
+
+    public void setXintiaoDIZhi(String xintiaoDIZhi) {
+        this.xintiaoDIZhi = xintiaoDIZhi;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public int getJidianqi() {
+        return jidianqi;
+    }
+
+    public void setJidianqi(int jidianqi) {
+        this.jidianqi = jidianqi;
+    }
+
+    public int getMoshengrenPanDing() {
+        return moshengrenPanDing;
+    }
+
+    public void setMoshengrenPanDing(int moshengrenPanDing) {
+        this.moshengrenPanDing = moshengrenPanDing;
+    }
+
+    public int getSbsRenLian() {
+        return sbsRenLian;
+    }
+
+    public void setSbsRenLian(int sbsRenLian) {
+        this.sbsRenLian = sbsRenLian;
+    }
+
+    public boolean isMsrPanDing() {
+        return msrPanDing;
+    }
+
+    public void setMsrPanDing(boolean msrPanDing) {
+        this.msrPanDing = msrPanDing;
+    }
+
+    public String getJiaoyanmima() {
+        return jiaoyanmima;
+    }
+
+    public void setJiaoyanmima(String jiaoyanmima) {
+        this.jiaoyanmima = jiaoyanmima;
+    }
 
     public int getPort() {
         return port;

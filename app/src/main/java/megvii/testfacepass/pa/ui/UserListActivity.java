@@ -21,8 +21,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.pingan.ai.access.manager.PaAccessControl;
-import com.zyao89.view.zloading.ZLoadingDialog;
-import com.zyao89.view.zloading.Z_TYPE;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class UserListActivity extends Activity implements UserListAdapter.ItemDe
     private EditText editText;
     //private ZLoadingDialog zLoadingDialog;
     LazyList<Subject> subjectLazyList;
-    private List<Subject> subjectList=new ArrayList<>();
+ //   private List<Subject> subjectList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

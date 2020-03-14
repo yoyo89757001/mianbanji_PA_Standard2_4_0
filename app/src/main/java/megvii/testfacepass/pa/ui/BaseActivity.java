@@ -86,7 +86,7 @@ public class BaseActivity extends AppCompatActivity implements EasyPermissions.P
         if (EasyPermissions.hasPermissions(this, perms)) {
             // 已经得到许可，就去做吧 //第一次授权成功也会走这个方法
             Log.d("BaseActivity", "成功获得权限");
-            start();
+           start();
 
         } else {
             // Do not have permissions, request them now
@@ -127,8 +127,8 @@ public class BaseActivity extends AppCompatActivity implements EasyPermissions.P
         //getAppid用作获取token // getAppkey用作激活
         if (baoCunBean.getAppurl()==null || baoCunBean.getAppid()==null|| baoCunBean.getAppkey()==null){
             showDialog(false);
-            ToastUtils.show2(BaseActivity.this, "初始化失败,激活码为空");
-            startActivity(new Intent(BaseActivity.this,MianBanJiActivity3.class));
+            ToastUtils.show2(BaseActivity.this, "初始化失败,请先激活设备");
+            startActivity(new Intent(BaseActivity.this,SheZhiActivity2.class));
             finish();
             return;
         }
@@ -255,7 +255,7 @@ public class BaseActivity extends AppCompatActivity implements EasyPermissions.P
         if (baoCunBean.getAppurl()==null || baoCunBean.getAppid()==null|| baoCunBean.getAppkey()==null){
             showDialog(false);
             ToastUtils.show2(BaseActivity.this, "初始化失败,激活码为空");
-            startActivity(new Intent(BaseActivity.this,MianBanJiActivity3.class));
+            startActivity(new Intent(BaseActivity.this,SheZhiActivity2.class));
             finish();
             return;
         }

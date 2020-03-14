@@ -193,10 +193,12 @@ public class MyApplication extends Application implements Application.ActivityLi
             baoCunBean.setMima2(123456);
             baoCunBean.setJihuoma("0000-0000-0000-0000-0000");
             baoCunBean.setHuoTi(false);
-            baoCunBean.setDangqianShiJian("d");
+            baoCunBean.setDangqianShiJian("2");
             baoCunBean.setTianQi(false);
             baoCunBean.setTishiyu("欢迎光临");
             baoCunBean.setPort(8090);
+            baoCunBean.setMsrPanDing(true);
+            baoCunBean.setConfigModel(1);
 
             mBoxStore.boxFor(BaoCunBean.class).put(baoCunBean);
         }
@@ -211,6 +213,8 @@ public class MyApplication extends Application implements Application.ActivityLi
                 .commit();
 
     }
+
+
 
   //  public Box<TodayBean> getTodayBeanBox(){
       //  return todayBeanBox;

@@ -64,11 +64,11 @@ public class FaceInit {
             //         .retryOnConnectionFailure(true)
             .build();
     private SharedPreferences mSharedPreferences;
-    static final String tokenApiUrl = "https://biap-dev-auth-test.pingan.com:10565/dev-auth-web/biap/demo/acticatecode/acquiretoken";
+  //  static final String tokenApiUrl = "https://biap-dev-auth-test.pingan.com:10565/dev-auth-web/biap/demo/acticatecode/acquiretoken";
     static final String device = "stest-dev";
 
    //  String authApiUrl = "https://biap-dev-auth.pingan.com/dev-auth-web/cloud/v4/awardlicence";//生产环境
-  //   String tokenApiUrl = "https://biap-dev-auth.pingan.com/dev-auth-web/biap/demo/acticatecode/acquiretoken";
+     String tokenApiUrl = "https://biap-dev-auth.pingan.com/dev-auth-web/biap/demo/acticatecode/acquiretoken";
 
 
     static {
