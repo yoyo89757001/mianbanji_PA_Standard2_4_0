@@ -245,6 +245,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
     private Lztek lztek=null;
     private Function mFuncs = null;
     private int loc_readerHandle=-1;
+    private boolean isCLOSDLED =false;
 
 
 
@@ -486,6 +487,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     case 444:
                         onP1 = false;
                         onP2 = false;
+
                         if (paAccessControl != null)
                             paAccessControl.stopFrameDetect();
 //                        runOnUiThread(new Runnable() {
@@ -793,6 +795,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                             SystemClock.sleep(180);
                             final int value = lztek.getGpioValue(218);
                             if (value==1){
+                                isCLOSDLED=true;
                                 Message message = new Message();
                                 message.what = 333;
                                 mHandler.sendMessage(message);
@@ -1283,9 +1286,11 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         task2 = new TimerTask() {
                             @Override
                             public void run() {
-                                Message message = new Message();
-                                message.what = 444;
-                                mHandler.sendMessage(message);
+                                if (isCLOSDLED){
+                                    Message message = new Message();
+                                    message.what = 444;
+                                    mHandler.sendMessage(message);
+                                }
                             }
                         };
                         timer2.schedule(task2, 5000);
@@ -1293,11 +1298,11 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         task2 = new TimerTask() {
                             @Override
                             public void run() {
-                                Message message = new Message();
-                                message.what = 444;
-                                mHandler.sendMessage(message);
-
-
+                                if (isCLOSDLED){
+                                    Message message = new Message();
+                                    message.what = 444;
+                                    mHandler.sendMessage(message);
+                                }
                             }
                         };
                         timer2.schedule(task2, 5000);
