@@ -249,6 +249,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1968,23 +1969,20 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         this.sendBroadcast(intent);
         sendBroadcast(new Intent("com.android.internal.policy.impl.hideNavigationBar"));
         sendBroadcast(new Intent("com.android.systemui.statusbar.phone.statusclose"));
-        if (jiqiType==2){//8寸防水面板机
-            try {
-             Lztek lztek=Lztek.create(MyApplication.myApplication);
-             lztek.navigationBarSlideShow(false);
-             lztek.hideNavigationBar();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            try {
-                HwitManager.HwitSetHideSystemBar(MianBanJiActivity3.this);
-                HwitManager.HwitSetDisableSlideShowSysBar(1);
-            }catch (NoClassDefFoundError error){
-                error.printStackTrace();
-            }
-
+       //8寸防水面板机
+        try {
+         Lztek lztek=Lztek.create(MyApplication.myApplication);
+         lztek.navigationBarSlideShow(false);
+         lztek.hideNavigationBar();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
+        try {
+            HwitManager.HwitSetHideSystemBar(MianBanJiActivity3.this);
+            HwitManager.HwitSetDisableSlideShowSysBar(1);
+        }catch (NoClassDefFoundError error){
+            error.printStackTrace();
+        }
     }
 
     private void menjing1() {

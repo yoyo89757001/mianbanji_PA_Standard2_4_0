@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="megvii.testfacepass.pa">
     <!-- Required -->
+
+
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"

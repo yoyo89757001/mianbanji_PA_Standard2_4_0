@@ -320,15 +320,16 @@ public class FaceInit {
 //                        }
 //                        inputStream.close();
 //                        bufferedReader.close();
-                    Log.d("FaceInit", s1s+"");
-                    Log.d("FaceInit", s2s+"");
-                    Log.d("FaceInit", s3s+"");
+
                     baoCunBean.setAppurl(s1s);
                     baoCunBean.setAppid(s2s);
                     baoCunBean.setAppkey(s3s);
                     baoCunBeanBox.put(baoCunBean);
 
                     initFacePassSDK(s1s,s2s,s3s,dingBean.getId(),url2);
+//                    Log.d("FaceInit", s1s+"");//APIKey
+//                    Log.d("FaceInit", s2s+"");//APIsecret
+//                    Log.d("FaceInit", s3s+"");//验证IP
 
 //                    } catch (Exception e) {
 //                        e.printStackTrace();

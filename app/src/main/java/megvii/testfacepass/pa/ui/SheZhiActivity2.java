@@ -174,6 +174,8 @@ public class SheZhiActivity2 extends Activity {
                     break;
             }
         }
+
+
         // mFacePassHandler=MyApplication.myApplication.getFacePassHandler();
         EventBus.getDefault().register(this);//订阅
 
@@ -266,7 +268,33 @@ public class SheZhiActivity2 extends Activity {
 
             }
         });
+
+        guanPing();
     }
+
+
+    private void guanPing() {
+        Intent intent = new Intent();
+        intent.setAction("LYD_SHOW_NAVIGATION_BAR");
+        intent.putExtra("type", 0);
+        this.sendBroadcast(intent);
+        sendBroadcast(new Intent("com.android.internal.policy.impl.hideNavigationBar"));
+        sendBroadcast(new Intent("com.android.systemui.statusbar.phone.statusclose"));
+        try {
+            Lztek lztek=Lztek.create(MyApplication.myApplication);
+            lztek.navigationBarSlideShow(false);
+            lztek.hideNavigationBar();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            HwitManager.HwitSetHideSystemBar(SheZhiActivity2.this);
+            HwitManager.HwitSetDisableSlideShowSysBar(1);
+        }catch (NoClassDefFoundError error){
+            error.printStackTrace();
+        }
+    }
+
 
 
     @Override

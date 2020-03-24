@@ -64,7 +64,7 @@ public class MyApplication extends Application implements Application.ActivityLi
     public static final String SDPATH2 = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"ruitongmbj";
     public static final String SDPATH3 = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"ruitongface";
    // protected OutputStream mOutputStream;
-    //这个是平安标准版2.4.0
+    //这个是平安标准版2.4.0  旧文档的
     //public SerialPortFinder mSerialPortFinder = new SerialPortFinder();
     private SerialPort mSerialPort = null;
 

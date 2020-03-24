@@ -434,7 +434,6 @@ public class MyService {
             return requsBean(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
-            paAccessControl.startFrameDetect();
             return requsBean(-1,e+"");
         }
     }
@@ -456,7 +455,6 @@ public class MyService {
             return requsBean(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
-            paAccessControl.startFrameDetect();
             return requsBean(-1,e+"");
         }
     }
@@ -478,7 +476,6 @@ public class MyService {
             return requsBean(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
-            paAccessControl.startFrameDetect();
             return requsBean(-1,e+"");
         }
     }
