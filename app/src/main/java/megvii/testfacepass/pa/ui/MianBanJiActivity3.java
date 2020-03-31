@@ -266,17 +266,14 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         mCompareThres = baoCunBean.getShibieFaZhi();
         if (baoCunBean.getDangqianChengShi2()!=null){
             switch (baoCunBean.getDangqianChengShi2()){
-                case "天波":
+                case "智连":
                     jiqiType=0;
                     break;
-                case "涂鸦":
+                case "亮钻":
                     jiqiType=1;
                     break;
-                case "户外防水8寸屏":
+                case "涂鸦":
                     jiqiType=2;
-                    break;
-                case "高通8寸屏":
-                    jiqiType=3;
                     break;
             }
         }
@@ -324,6 +321,13 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 //            }
 //        }).start();
 
+        if (serverManager != null) {
+            serverManager.stopServer();
+            serverManager = null;
+        }
+        serverManager = new ServerManager(FileUtil.getIPAddress(getApplicationContext()), baoCunBean.getPort());
+        serverManager.setMyServeInterface(MianBanJiActivity3.this);
+        serverManager.startServer();
 
         //每分钟的广播
         // private TodayBean todayBean = null;
@@ -433,7 +437,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                          //   faceView.setTC(BitmapFactory.decodeFile(MyApplication.SDPATH3 + File.separator + subject.getTeZhengMa() + ".png")
                             //        , subject.getName(), subject.getDepartmentName());
                             soundPool.play(musicId.get(1), 1, 1, 0, 0, 1);
-                            DengUT.openDool();
+                            DengUT.getInstance(baoCunBean).openDool();
                             DaKaBean daKaBean=new DaKaBean();
                             daKaBean.setId2(subject.getTeZhengMa());
                             daKaBean.setName(subject.getName());
@@ -474,7 +478,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         break;
                     }
                     case 222: {//关门
-                        DengUT.closeDool();
+                        DengUT.getInstance(baoCunBean).closeDool();
                         break;
                     }
                     case 333:
@@ -482,7 +486,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                         onP2 = true;
                         if (paAccessControl != null)
                             paAccessControl.startFrameDetect();
-                        DengUT.openLOED();
+                        DengUT.getInstance(baoCunBean).openLOED();
 
                         break;
                     case 444:
@@ -514,7 +518,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 //                            }
 //                        });
 //                        anim.start();
-                        DengUT.closeLOED();
+                        DengUT.getInstance(baoCunBean).closeLOED();
                         break;
 
                 }
@@ -622,7 +626,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             tastyToast.setGravity(Gravity.CENTER, 0, 0);
             tastyToast.show();
             soundPool.play(musicId.get(1), 1, 1, 0, 0, 1);
-            DengUT.openDool();
+            DengUT.getInstance(baoCunBean).openDool();
             IDCardBean cardBean=idCardBeanList.get(0);
             link_shuaka(sdfds,cardBean.getName());
             //启动定时器或重置定时器
@@ -765,15 +769,15 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
                                     if (DengUT.isOPENRed) {
                                         DengUT.isOPENRed = false;
-                                        DengUT.closeRed();
+                                        DengUT.getInstance(baoCunBean).closeRed();
                                     }
                                     if (DengUT.isOPENGreen) {
                                         DengUT.isOPENGreen = false;
-                                        DengUT.closeGreen();
+                                        DengUT.getInstance(baoCunBean).closeGreen();
                                     }
                                     if (DengUT.isOPEN) {
                                         DengUT.isOPEN = false;
-                                        DengUT.closeWrite();
+                                        DengUT.getInstance(baoCunBean).closeWrite();
                                     }
                                 }
                             }
@@ -891,11 +895,13 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
     @Override
     public void onStopped() {
+        serverManager=null;
         Log.d("MianBanJiActivity3", "小服务器停止");
     }
 
     @Override
     public void onException(Exception e) {
+        serverManager=null;
         Log.d("MianBanJiActivity3", "小服务器异常" + e);
     }
 
@@ -1278,7 +1284,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                     DengUT.isOPENRed = false;
                     DengUT.isOpenDOR = false;
 
-                    DengUT.closeWrite();
+                    DengUT.getInstance(baoCunBean).closeWrite();
 
                     //启动定时器或重置定时器
                     if (task2 != null) {
@@ -1340,7 +1346,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
             if (!DengUT.isOPEN) {
                 DengUT.isOPEN = true;
 
-                DengUT.openWrite();
+                DengUT.getInstance(baoCunBean).openWrite();
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -1369,7 +1375,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
                         if (!DengUT.isOPENGreen) {
                             DengUT.isOPENGreen = true;
-                            DengUT.openGreen();
+                            DengUT.getInstance(baoCunBean).openGreen();
                         }
 
                         DengUT.isOPEN = true;
@@ -1419,7 +1425,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
                         if (!DengUT.isOPENRed) {
                             DengUT.isOPENRed = true;
-                            DengUT.openRed();
+                            DengUT.getInstance(baoCunBean).openRed();
                         }
 
                         showUIResult(3,"陌生人","");
@@ -1450,7 +1456,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
                         if (!DengUT.isOPENRed) {
                             DengUT.isOPENRed = true;
-                            DengUT.openRed();
+                            DengUT.getInstance(baoCunBean).openRed();
                         }
                         DengUT.isOPEN = true;
                     }
@@ -1612,9 +1618,9 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
         if (task2 != null)
             task2.cancel();
 
-        DengUT.closeWrite();
-        DengUT.closeGreen();
-        DengUT.closeRed();
+        DengUT.getInstance(baoCunBean).closeWrite();
+        DengUT.getInstance(baoCunBean).closeGreen();
+        DengUT.getInstance(baoCunBean).closeRed();
         if (serverManager != null) {
             serverManager.stopServer();
             serverManager = null;
@@ -1715,6 +1721,12 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                             serverManager.stopServer();
                             serverManager = null;
                         }
+                        serverManager = new ServerManager(FileUtil.getIPAddress(getApplicationContext()), baoCunBean.getPort());
+                        serverManager.setMyServeInterface(MianBanJiActivity3.this);
+                        serverManager.startServer();
+                    }
+
+                    if (serverManager == null) {
                         serverManager = new ServerManager(FileUtil.getIPAddress(getApplicationContext()), baoCunBean.getPort());
                         serverManager.setMyServeInterface(MianBanJiActivity3.this);
                         serverManager.startServer();
@@ -1987,14 +1999,14 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
 
     private void menjing1() {
         // TPS980PosUtil.setJiaJiPower(1);
-        DengUT.openDool();
+        DengUT.getInstance(baoCunBean).openDool();
       //  TPS980PosUtil.setRelayPower(1);
         Log.d("MianBanJiActivity3", "打开");
     }
 
     private void menjing2() {
         //  TPS980PosUtil.setJiaJiPower(0);
-        DengUT.closeDool();
+        DengUT.getInstance(baoCunBean).closeDool();
        // TPS980PosUtil.setRelayPower(0);
         Log.d("MianBanJiActivity3", "关闭");
     }
@@ -2064,7 +2076,7 @@ public class MianBanJiActivity3 extends Activity implements CameraManager.Camera
                 tastyToast.setGravity(Gravity.CENTER, 0, 0);
                 tastyToast.show();
                 soundPool.play(musicId.get(1), 1, 1, 0, 0, 1);
-                DengUT.openDool();
+                DengUT.getInstance(baoCunBean).openDool();
                 IDCardBean cardBean=idCardBeanList.get(0);
                 link_shuaka(sdfds,cardBean.getName());
                 //启动定时器或重置定时器

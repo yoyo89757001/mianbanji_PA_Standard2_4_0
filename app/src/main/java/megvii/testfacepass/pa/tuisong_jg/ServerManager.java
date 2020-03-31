@@ -25,7 +25,6 @@ public class ServerManager {
      * Create server.
      */
     public ServerManager(final String ip, final int port) {
-
         InetAddress inetAddress = null;
         try {
             inetAddress = InetAddress.getByName(ip);

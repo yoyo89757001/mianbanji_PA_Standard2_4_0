@@ -752,7 +752,7 @@ public class FileUtil {
      * @param quality
      * @return
      */
-    public static boolean saveBitmap2File(Bitmap bm, String path, int quality) {
+    public static boolean saveBitmap2File(Bitmap bm, String path) {
         if (null == bm || bm.isRecycled()) {
             return false;
         }
@@ -763,7 +763,7 @@ public class FileUtil {
             }
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(file));
-            bm.compress(Bitmap.CompressFormat.JPEG, quality, bos);
+            bm.compress(Bitmap.CompressFormat.PNG, 100, bos);
             bos.flush();
             bos.close();
             return true;

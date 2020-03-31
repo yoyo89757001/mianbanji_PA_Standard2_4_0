@@ -151,26 +151,22 @@ public class SheZhiActivity2 extends Activity {
         paAccessControl = PaAccessControl.getInstance();
         //ScreenAdapterTools.getInstance().reset(this);//如果希望android7.0分屏也适配的话,加上这句
         //在setContentView();后面加上适配语句
-        options1Items.add(new JsonBean("天波"));
+        options1Items.add(new JsonBean("智连"));
+        options1Items.add(new JsonBean("亮钻"));
         options1Items.add(new JsonBean("涂鸦"));
-        options1Items.add(new JsonBean("户外防水8寸屏"));
-        options1Items.add(new JsonBean("高通8寸屏"));
         baoCunBeanDao = MyApplication.myApplication.getBaoCunBeanBox();
         // chengShiIDBeanBox = MyApplication.myApplication.getChengShiIDBeanBox();
         baoCunBean = baoCunBeanDao.get(123456L);
         if (baoCunBean.getDangqianChengShi2()!=null){
             switch (baoCunBean.getDangqianChengShi2()){
-                case "天波":
+                case "智连":
                     jiqiType=0;
                     break;
-                case "涂鸦":
+                case "亮钻":
                     jiqiType=1;
                     break;
-                case "户外防水8寸屏":
+                case "涂鸦":
                     jiqiType=2;
-                    break;
-                case "高通8寸屏":
-                    jiqiType=3;
                     break;
             }
         }
@@ -179,8 +175,8 @@ public class SheZhiActivity2 extends Activity {
         // mFacePassHandler=MyApplication.myApplication.getFacePassHandler();
         EventBus.getDefault().register(this);//订阅
 
-        DengUT.openLOED();
-        DengUT.closeWrite();
+        DengUT.getInstance(baoCunBean).openLOED();
+        DengUT.getInstance(baoCunBean).closeWrite();
 
         if (baoCunBean.getDangqianChengShi2()!=null){
             chengshi.setText(baoCunBean.getDangqianChengShi2());
@@ -1164,13 +1160,13 @@ public class SheZhiActivity2 extends Activity {
                 baoCunBean=baoCunBeanDao.get(123456);
                 if (baoCunBean.getDangqianChengShi2()!=null){
                     switch (baoCunBean.getDangqianChengShi2()){
-                        case "天波":
+                        case "智连":
                             jiqiType=0;
                             break;
-                        case "涂鸦":
+                        case "亮钻":
                             jiqiType=1;
                             break;
-                        case "户外防水8寸屏":
+                        case "涂鸦":
                             jiqiType=2;
                             break;
                     }
